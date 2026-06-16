@@ -66,9 +66,9 @@ Dart has a rich set of core libraries, providing essentials for many everyday pr
 #### [Basics with Dart - first Steps](https://github.com/aljamu/dartpedia-learning-dart)
 A Basic Cli Application that fetches Data from the Wikipedia-API. Following the official [Dart Tutorial](https://dart.dev/learn/tutorial)
 
-#### Learning Flutter
+### Learning Flutter
 
-##### Widgets
+#### Widgets
 
 A Widget is a Dart class that extends one of the Flutter widget classes, for example StatelessWidget.
 
@@ -100,3 +100,21 @@ class _ExampleWidgetState extends State<ExampleWidget> {
 }
 
 - Whenever you mutate a State object, you must call setState to signal the framework to update the user interface and call the build method again.
+
+#### Packages
+
+- add packages: "flutter pub add [name]" in cli
+    - e. g.: flutter pub add http
+
+#### MVVM-Architecture
+
+Model-View-ViewModel
+
+- Model: Handles data operations.
+- View: Displays the UI.
+- ViewModel: Manages state and connects the two.
+
+The core tenet of MVVM (and many other patterns) is separation of concerns. Managing state in separate classes (outside your UI widgets) makes your code more testable, reusable, and easier to maintain.
+
+##### Model
+The Model is the source-of-truth for your app's data and is responsible for low-level tasks such as making HTTP requests, caching data, or managing system resources such as used by a Flutter plugin. A model doesn't usually need to import Flutter libraries.
