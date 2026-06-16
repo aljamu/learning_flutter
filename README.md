@@ -36,6 +36,7 @@ samples, guidance on mobile development, and a full API reference.
     - Debugging Mode: Run > Start Debugging (OR press F5)
         - flutter run used to build and start app
     - Run w/o Debugging: Run > Start without Debugginh (OR press ctrl + F5)
+- flutter run -d web-server
 
 ### Learning Dart
 

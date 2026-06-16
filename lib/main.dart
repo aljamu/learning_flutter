@@ -62,9 +62,7 @@ class ArticleViewModel extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
-
 }
-
 
 class ArticleView extends StatefulWidget {
   const ArticleView({super.key});
@@ -161,6 +159,16 @@ class ArticleWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
           Text(summary.extract),
+          Center(
+            child: Row(
+              spacing: 3,
+              children: [
+                Column(children: [Text("Lorem")]),
+                Column(children: [Text("Ipsum")]),
+              ],
+            ),
+          ),
+          Text("Lol"),
         ],
       ),
     );
