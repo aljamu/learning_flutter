@@ -82,4 +82,21 @@ A Widget is a Dart class that extends one of the Flutter widget classes, for exa
     - Text
 -It's a good practice for interactive widgets to use callback functions to keep the widget that handles interactions reusable and decoupled from any specific functionality.
 
+##### Stateful Widget
+When a widget's appearance or data needs to change during its lifetime, you need a StatefulWidget and a companion State object. While the StatefulWidget itself is still immutable (its properties can't change after creation), the State object is long-lived, can hold mutable data, and can be rebuilt when that data changes, causing the UI to update.
 
+class ExampleWidget extends StatefulWidget {
+  ExampleWidget({super.key});
+
+  @override
+  State<ExampleWidget> createState() => _ExampleWidgetState();
+}
+
+class _ExampleWidgetState extends State<ExampleWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+- Whenever you mutate a State object, you must call setState to signal the framework to update the user interface and call the build method again.
