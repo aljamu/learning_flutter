@@ -80,5 +80,6 @@ A Widget is a Dart class that extends one of the Flutter widget classes, for exa
     - AppBar (like taskbar or navbar)
     - Center
     - Text
+-It's a good practice for interactive widgets to use callback functions to keep the widget that handles interactions reusable and decoupled from any specific functionality.
 
 
