@@ -37,3 +37,48 @@ samples, guidance on mobile development, and a full API reference.
         - flutter run used to build and start app
     - Run w/o Debugging: Run > Start without Debugginh (OR press ctrl + F5)
 
+### Learning Dart
+
+#### [Overview](https://dart.dev/overview)
+
+client-optimized language for developing fast apps on any plattform
+
+- forms founation of Flutter: provides language and runtime, also provides tasks like formatting, analyzing and testing code
+- TYPESAFE language: static type checking to ensure that value always matches type
+- Dart has built-in SOUND NULL SAFETY: values can't be null unless you say they can be -> protection agains null exceptions at runtime
+
+#### [Libabries](https://dart.dev/libraries)
+
+Dart has a rich set of core libraries, providing essentials for many everyday programming tasks:
+
+- Built-in types, collections, and other core functionality for every Dart program (dart:core)
+- Richer collection types such as queues, linked lists, hashmaps, and binary trees (dart:collection)
+- Encoders and decoders for converting between different data representations, including JSON and UTF-8 (dart:convert)
+- Mathematical constants and functions, and random number generation (dart:math)
+- Support for asynchronous programming, with classes such as Future and Stream (dart:async)
+- Lists that efficiently handle fixed-sized data (for example, unsigned 8-byte integers) and SIMD numeric types (dart:typed_data)
+- File, socket, HTTP, and other I/O support for non-web applications (dart:io)
+- Foreign function interfaces for interoperability with other code that presents a C-style interface (dart:ffi)
+- Concurrent programming using isolates—independent workers that are similar to threads but don't share memory, communicating only through messages (dart:isolate)
+- HTML elements and other resources for web-based applications that need to interact with the browser and the Document Object Model (DOM) (dart:js_interop and package:web)
+- and more: characters, intl, http, crypto, markdown, xml, windows integration, sqlite, compression etc.
+
+#### [Basics with Dart - first Steps](https://github.com/aljamu/dartpedia-learning-dart)
+A Basic Cli Application that fetches Data from the Wikipedia-API. Following the official [Dart Tutorial](https://dart.dev/learn/tutorial)
+
+#### Learning Flutter
+
+##### Widgets
+
+A Widget is a Dart class that extends one of the Flutter widget classes, for example StatelessWidget.
+
+- Build REUSABLE components
+- Most widgets have a child or children property that's meant to be passed a widget or a list of widgets
+- Common Widgets:
+    - Container (convenient Widget that wraps several core stylings like Padding, ColoredBox, etc.)
+    - Scaffold (convenience widget that provides a Material-style page layout)
+    - AppBar (like taskbar or navbar)
+    - Center
+    - Text
+
+
