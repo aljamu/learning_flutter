@@ -118,3 +118,8 @@ The core tenet of MVVM (and many other patterns) is separation of concerns. Mana
 
 ##### Model
 The Model is the source-of-truth for your app's data and is responsible for low-level tasks such as making HTTP requests, caching data, or managing system resources such as used by a Flutter plugin. A model doesn't usually need to import Flutter libraries.
+
+##### ViewModel
+When developers talk about state-management in Flutter, they're essentially referring to the pattern by which your app updates the data it needs to render correctly and then tells Flutter to re-render the UI with that new data.
+
+In MVVM, this responsibility falls to the ViewModel layer, which sits between and connects your UI to your Model layer. In Flutter, ViewModels use Flutter's ChangeNotifier class to notify the UI when data changes.
