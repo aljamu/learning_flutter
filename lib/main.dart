@@ -43,8 +43,30 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double buttonHeight = 50;
-    double buttonWidth = 500;
+    return Counter();
+  }
+}
+//Configuration for state. Holds the values of parent and ud by the build method
+class Counter extends StatefulWidget {
+  const Counter({ super.key });
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  double height = 50;
+  double width = 500;
+  int _counter = 0;
+
+  void _increment(){
+    setState(() {
+      _counter++;
+    });
+  }
+
+  //Will rerun every time the setState is called.
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 5,
@@ -55,11 +77,11 @@ class MyButton extends StatelessWidget {
             //More Gestures are IconButton, ElevatedButton, FloatingActionButton with onPressed() callbacks
             GestureDetector(
               onTap: () {
-                print('MyButton was tapped!');
+                _increment();
               },
               child: Container(
-                height: buttonHeight,
-                width: buttonWidth,
+                height: height,
+                width: width,
                 padding: const EdgeInsets.all(8),
                 margin: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
@@ -74,14 +96,14 @@ class MyButton extends StatelessWidget {
         Column(
           children: [
             Container(
-              height: buttonHeight,
-              width: buttonWidth,
+              height: height,
+              width: width,
               decoration: BoxDecoration(color: Colors.lightBlue[500]),
-              child: const Center(child: Text('No Button')),
+              child: Center(child: Text('Count: $_counter')),
             ),
           ],
-        ),
+        ),   
       ],
-    );
+    ); 
   }
 }
