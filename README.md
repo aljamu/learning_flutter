@@ -87,7 +87,7 @@ A Widget is a Dart class that extends one of the Flutter widget classes, for exa
 
 Stateless Arguments recieve arguments from their parent widgets, which they store in FINAL member variables. 
 
-##### Stateful Widget
+##### [Stateful Widget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html)
 When a widget's appearance or data needs to change during its lifetime, you need a StatefulWidget and a companion State object. While the StatefulWidget itself is still immutable (its properties can't change after creation), the State object is long-lived, can hold mutable data, and can be rebuilt when that data changes, causing the UI to update.
 
 class ExampleWidget extends StatefulWidget {

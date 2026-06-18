@@ -75,22 +75,7 @@ class _CounterState extends State<Counter> {
           children: [
             //Gesture is basically a Button
             //More Gestures are IconButton, ElevatedButton, FloatingActionButton with onPressed() callbacks
-            GestureDetector(
-              onTap: () {
-                _increment();
-              },
-              child: Container(
-                height: height,
-                width: width,
-                padding: const EdgeInsets.all(8),
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.lightGreen[500],
-                ),
-                child: const Center(child: Text('Engage Button')),
-              ),
-            ),
+            CounterIncrementor(onPressed: _increment)
           ],
         ),
         Column(
@@ -105,5 +90,26 @@ class _CounterState extends State<Counter> {
         ),   
       ],
     ); 
+  }
+}
+
+class CounterDisplay extends StatelessWidget {
+  const CounterDisplay({required this.count, super.key});
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Count: $count');
+  }
+}
+
+class CounterIncrementor extends StatelessWidget {
+  const CounterIncrementor({required this.onPressed, super.key});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(onPressed: onPressed, child: const Text('Increment'));
   }
 }
