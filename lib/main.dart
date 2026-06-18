@@ -1,189 +1,87 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-
-import 'summary.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const MaterialApp(title: 'Flutter Tutorial', home: TutorialHome()));
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class TutorialHome extends StatelessWidget {
+  const TutorialHome({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: ArticleView());
-  }
-}
-
-
-
-class ArticleModel {
-  Future<Summary> getRandomArticleSummary() async {
-    final uri = Uri.https(
-      'en.wikipedia.org',
-      '/api/rest_v1/page/random/summary',
-    );
-    final response = await get(uri);
-
-    if (response.statusCode != 200) {
-      throw const HttpException('Failed to update resource');
-    }
-
-    return Summary.fromJson(jsonDecode(response.body) as Map<String, Object?>);
-  }
-}
-
-class ArticleViewModel extends ChangeNotifier {
-  final ArticleModel model;
-  Summary? summary;
-  Exception? error;
-  bool isLoading = false;
-
-  ArticleViewModel(this.model) {
-    fetchArticle();
-  }
-
-  Future<void> fetchArticle() async {
-    isLoading = true;
-    notifyListeners();
-    try {
-      summary = await model.getRandomArticleSummary();
-      print('Article loaded: ${summary!.titles.normalized}'); // Temporary
-      error = null; // Clear any previous errors.
-    } on HttpException catch (e) {
-      print('Error loading article: ${e.message}'); // Temporary
-      error = e;
-      summary = null;
-    }
-    isLoading = false;
-    notifyListeners();
-  }
-}
-
-class ArticleView extends StatefulWidget {
-  const ArticleView({super.key});
-
-  @override
-  State<ArticleView> createState() => _ArticleViewState();
-}
-
-class _ArticleViewState extends State<ArticleView> {
-  final ArticleViewModel viewModel = ArticleViewModel(ArticleModel());
-
-  @override
-  void initState() {
-    super.initState();
-    viewModel.fetchArticle();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+    // Scaffold is a layout for
+    // the major Material Components.
     return Scaffold(
-      appBar: AppBar(title: const Text('Wikipedia Flutter')),
-      body: Center(
-        child: ListenableBuilder(
-          listenable: viewModel,
-          builder: (context, _) {
-            return switch ((
-              viewModel.isLoading,
-              viewModel.summary,
-              viewModel.error,
-            )) {
-              (true, _, _) => const CircularProgressIndicator(),
-              (_, _, final Exception e) => Text('Error: $e'),
-              (_, final summary?, _) => ArticlePage(
-                summary: summary,
-                nextArticleCallback: viewModel.fetchArticle,
-              ),
-              _ => const Text('Something went wrong!'),
-            };
-          },
+      appBar: AppBar(
+        leading: const IconButton(
+          icon: Icon(Icons.menu),
+          tooltip: 'Navigation menu',
+          onPressed: null,
         ),
-      ),
-    );
-  }
-}
-
-class ArticlePage extends StatelessWidget {
-  const ArticlePage({
-    super.key,
-    required this.summary,
-    required this.nextArticleCallback,
-  });
-
-  final Summary summary;
-  final VoidCallback nextArticleCallback;
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ArticleWidget(summary: summary),
-          ElevatedButton(
-            onPressed: nextArticleCallback,
-            child: const Text('Next random article'),
+        title: const Text('Example title'),
+        actions: const [
+          IconButton(
+            icon: Icon(Icons.search),
+            tooltip: 'Search',
+            onPressed: null,
           ),
         ],
       ),
-    );
-  }
-}
-
-class ArticleWidget extends StatelessWidget {
-  const ArticleWidget({super.key, required this.summary});
-
-  final Summary summary;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        spacing: 10,
-        children: [
-          if (summary.hasImage) Image.network(summary.originalImage!.source),
-          Text(
-            summary.titles.normalized,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.displaySmall,
-          ),
-          if (summary.description != null)
-            Text(
-              summary.description!,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          Text(summary.extract),
-          Center(
-            child: Row(
-              spacing: 3,
-              children: [
-                Column(children: [Text("Lorem")]),
-                Column(children: [Text("Ipsum")]),
-              ],
-            ),
-          ),
-          Text("Lol"),
-        ],
+      // body is the majority of the screen.
+      body: const Center(child: MyButton()),
+      floatingActionButton: const FloatingActionButton(
+        tooltip: 'Add', // used by assistive technologies
+        onPressed: null,
+        child: Icon(Icons.add),
       ),
     );
   }
 }
 
+class MyButton extends StatelessWidget {
+  const MyButton({super.key});
 
-
-
-
-
-
-
-
-
-
-
-
+  @override
+  Widget build(BuildContext context) {
+    double buttonHeight = 50;
+    double buttonWidth = 500;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 5,
+      children: [
+        Column(
+          children: [
+            //Gesture is basically a Button
+            //More Gestures are IconButton, ElevatedButton, FloatingActionButton with onPressed() callbacks
+            GestureDetector(
+              onTap: () {
+                print('MyButton was tapped!');
+              },
+              child: Container(
+                height: buttonHeight,
+                width: buttonWidth,
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Colors.lightGreen[500],
+                ),
+                child: const Center(child: Text('Engage Button')),
+              ),
+            ),
+          ],
+        ),
+        Column(
+          children: [
+            Container(
+              height: buttonHeight,
+              width: buttonWidth,
+              decoration: BoxDecoration(color: Colors.lightBlue[500]),
+              child: const Center(child: Text('No Button')),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
