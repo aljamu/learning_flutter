@@ -1,7 +1,7 @@
 # learning_flutter
 A new Flutter project.
 
-## Getting Started
+### Getting Started
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
@@ -16,7 +16,7 @@ samples, guidance on mobile development, and a full API reference.
 
 
 
-## Start a new Project
+### Start a new Project
 
 - With Extension:
     - Add Flutter Extension to VS Code / Codium
@@ -27,7 +27,7 @@ samples, guidance on mobile development, and a full API reference.
 - Manually:
     - [Install Flutter manually](https://docs.flutter.dev/install/manual)
 
-## Run your app
+### Run your app
 
 - Command Palette (View > Comand Palette):
     - Flutter: Select Device
@@ -69,6 +69,46 @@ A Basic Cli Application that fetches Data from the Wikipedia-API. Following the 
 
 
 # Learning Flutter
+Flutter is a declarative, multi-platform UI framework written in Dart.
+
+## [MVVM-Architecture](https://docs.flutter.dev/app-architecture/guide)
+The core tenet of MVVM (and many other patterns) is separation of concerns. Managing state in separate classes (outside your UI widgets) makes your code more testable, reusable, and easier to maintain.
+- Model: Handles data operations.
+- View: Displays the UI.
+- ViewModel: Manages state and connects the two.
+
+![MVVM](https://docs.flutter.dev/assets/images/docs/app-architecture/guide/feature-architecture-simplified.png)
+- UI Layer: Interact with Users. Displays data or recieves user input
+- Data Layer: The data layer of an app handles your business data and logic ( services and repositories).
+### Views
+In Flutter, views are the widget classes of your application. Views are the primary method of rendering UI, and shouldn't contain any business logic. They should be passed all data they need to render from the view model. The only logic a view should contain is:
+- Simple if-statements to show and hide widgets based on a flag or nullable field in the view model
+- Animation logic
+- Layout logic based on device information, like screen size or orientation.
+- Simple routing logic
+All logic related to data should be handled in the view model.
+
+### ViewModel
+A view model exposes the application data necessary to render a view. In the architecture design described on this page, most of the logic in your Flutter application lives in view models.
+Views and view models should have a one-to-one relationship.
+A view model's main responsibilities include:
+- Retrieving application data from repositories and transforming it into a format suitable for presentation in the view. For example, it might filter, sort, or aggregate data.
+- Maintaining the current state needed in the view, so that the view can rebuild without losing data. For example, it might contain boolean flags to conditionally render widgets in the view, or a field that tracks which section of a carousel is active on screen.
+- Exposes callbacks (called commands) to the view that can be attached to an event handler, like a button press or form submission.
+
+### Model
+Models are made from repositories and services.
+#### Repositories
+Repositories is the source-of-truth for your app's data and is responsible for polling data from services, and transforming that raw data into domain models. Domain models represent the data that the application needs, formatted in a way that your view model classes can consume. There should be a repository class for each different type of data handled in your app.
+Repositories handle the business logic associated with services, but should never be aware of each other. If your application has business logic that needs data from two repositories, you should combine the data in the view model
+#### Services
+Services are in the lowest layer of your application. They wrap API endpoints and expose asynchronous response objects, such as Future and Stream objects. They're only used to isolate data-loading, and they hold no state. Your app should have one service class per data source. Examples of endpoints that services might wrap include:
+- The underlying platform, like iOS and Android APIs
+- REST endpoints
+- Local files
+As a rule of thumb, services are most helpful when the necessary data lives outside of your application's Dart code - which is true of each of the preceding examples.
+
+
 ## Widgets
 
 A Widget is a Dart class that extends one of the Flutter widget classes, for example StatelessWidget.
@@ -78,48 +118,61 @@ A Widget is a Dart class that extends one of the Flutter widget classes, for exa
 - It's a good practice for interactive widgets to use callback functions to keep the widget that handles interactions reusable and decoupled from any specific functionality.
 
 ### Stateless Widget
-Stateless Arguments recieve arguments from their parent widgets, which they store in FINAL member variables. 
+Stateless Arguments recieve arguments from their parent widgets, which they store in FINAL member variables.
+```dart    
+class ExampleWidget extends StatelessWidget {
+    ExampleWidget(/* parameters */);
+
+    //build = render method. Contect provides access to important runtime values like screen size,
+    //accessibility info like text direction, orientation, etc. Aka ELEMENT of this widget
+    Widget build(BuildContext context) {
+        return ChildWidget();
+    }
+}
+```
 
 ### [Stateful Widget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html)
 When a widget's appearance or data needs to change during its lifetime, you need a StatefulWidget and a 
 companion State object.
 
-```dart    class ExampleWidget extends StatefulWidget {
+```dart    
+class ExampleWidget extends StatefulWidget {
     ExampleWidget({super.key});
 
     @override
     State<ExampleWidget> createState() => _ExampleWidgetState();
-    }
+}
 
-    class _ExampleWidgetState extends State<ExampleWidget> {
+//State object
+class _ExampleWidgetState extends State<ExampleWidget> {
     @override
     Widget build(BuildContext context) {
         return Container();
-    }
-    }
+}
+}
 ```
 - A widget's state is stored in a State object, separating the widget's state from its appearance. The state consists of values that can change, like a slider's current value or whether a checkbox is checked. When the widget's state changes, the state object calls **setState()**, telling the framework to redraw the widget.
 
+- SetState() will only update values, any calculations are to be made before
+```dart    
+final values = calculations();
+setState(() {
+    color = values.color;
+    size = values.size;
+})
+```
+### State object and their lifecycle
+- initState: initialize instance ressources like controllers
+- didChangeDependencies: Helps passing down state deep down the widget tree
+- didUpdateWidget: If a widget value has chanded since the last frame, e.g. animation
+- build
+- dispose: clean up when widget unneccessary and ressources are released
+
+
 ## Packages
 
-- add packages: "flutter pub add [name]" in cli
-    - e. g.: flutter pub add http
+- add packages: "flutter pub add [name]" in cli e.g.: flutter pub add http
 
-## MVVM-Architecture (Model-View-ViewModel)
-
-- Model: Handles data operations.
-- View: Displays the UI.
-- ViewModel: Manages state and connects the two.
-
-The core tenet of MVVM (and many other patterns) is separation of concerns. Managing state in separate classes (outside your UI widgets) makes your code more testable, reusable, and easier to maintain.
-
-### Model
-The Model is the source-of-truth for your app's data and is responsible for low-level tasks such as making HTTP requests, caching data, or managing system resources such as used by a Flutter plugin. A model doesn't usually need to import Flutter libraries.
-
-### ViewModel
-When developers talk about state-management in Flutter, they're essentially referring to the pattern by which your app updates the data it needs to render correctly and then tells Flutter to re-render the UI with that new data.
-
-In MVVM, this responsibility falls to the ViewModel layer, which sits between and connects your UI to your Model layer. In Flutter, ViewModels use Flutter's ChangeNotifier class to notify the UI when data changes.
 
 ## Layouts
 
@@ -262,3 +315,7 @@ Apps often require users to enter information into a text field. For example, yo
 #### Create a Form with a GlobalKey
 The Form widget acts as a container for grouping and validating multiple form fields.
 When creating the form, provide a GlobalKey. This assigns a **unique identifier** to your Form. It also allows you to validate the form later.
+
+
+## Navigation and Routing
+Flutter provides a complete system for navigating between screens and handling [deep links](https://docs.flutter.dev/ui/navigation/deep-linking). Small applications without complex deep linking can use Navigator, while apps with specific deep linking and navigation requirements should also use the Router to correctly handle deep links on Android and iOS, and to stay in sync with the address bar when the app is running on the web.
