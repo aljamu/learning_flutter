@@ -105,6 +105,8 @@ class _ExampleWidgetState extends State<ExampleWidget> {
 }
 
 - Whenever you mutate a State object, you must call setState to signal the framework to update the user interface and call the build method again.
+- A stateful widget is dynamic: for example, it can change its appearance in response to events triggered by user interactions or when it receives data. Checkbox, Radio, Slider, InkWell, Form, and TextField are examples of stateful widgets. Stateful widgets subclass StatefulWidget.
+- A widget's state is stored in a State object, separating the widget's state from its appearance. The state consists of values that can change, like a slider's current value or whether a checkbox is checked. When the widget's state changes, the state object calls setState(), telling the framework to redraw the widget.
 
 #### Packages
 
@@ -137,22 +139,27 @@ Widgets can be seperated into visible and layout widgets.
 - Layout Widgets: Help layouting like padding, margin, colors etc.. They have child and children properties for other layout or visible widgets
 
 ##### Layout
+
 There are Flutter Base Widgets, Material Widgets specifically for Android and Cupertino for iOS
 
 ###### Container
+
 A container is used whenever you need customization like padding, margins, borders and bg color on it's child elements.
 
 ###### Row and Column
+
 Used to nest other widgets inside.
 They usually take up all the space they need. For Opposite: e.g. mainAxisSize.min
 
 ###### Aligning Widgets
+
 Alignment with mainAxisAlignment and crossAxisAlignment
 
 - mainAxisAlignment: Horizontally for a Row, Vertically for a Column (e.g. ROW [o, o, o, o, o] - ---mainAxis--->)
 - crossAxisAlignment: Vertically for a Row, Horizontally for a Column (e.g. ROW [o, o, o, o, o] vvvvcrossAxisvvvv)
 
 ###### Expanded
+
 Widgets can be sized to fit within a row or column.
 Has Flex property: determines the flex facrot for a widget (default 1).
 E.g.
@@ -160,10 +167,21 @@ E.g.
 [flex: 1]  [flex: 2]  [flex: 1]
 
 ###### GridView
+
 Build a custom grid, replacing nested rows and cols
 
 ###### ListView
+
 A column-like widget that automatically provides scrolling when content is too long
 
 ###### Stack
+
 Arrange widgets on top of a base widget (e.g. often an image) either completely or partially.
+
+###### Responsive Design
+
+[Google offers a simple 3-way method to archive responsiveness across the platform. Click me for more details](https://docs.flutter.dev/ui/adaptive-responsive/general)
+
+###### Share Layout and Fonts with Themes
+
+[To share colors and font styles throughout an app, use themes](https://docs.flutter.dev/cookbook/design/themes)

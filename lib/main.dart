@@ -66,9 +66,8 @@ class TitleSection extends StatelessWidget {
               ],
             ),
           ),
-          /*3*/
-          Icon(Icons.star, color: Colors.red[500]),
-          const Text('41'),
+          const FavoriteWidget(),
+
         ],
       ),
     );
@@ -155,6 +154,57 @@ class ImageSection extends StatelessWidget {
   }
 }
 
+
+class FavoriteWidget extends StatefulWidget {
+  const FavoriteWidget({super.key});
+
+  @override
+  State<FavoriteWidget> createState() => _FavoriteWidgetState();
+}
+
+
+class _FavoriteWidgetState extends State<FavoriteWidget> {
+  // stores the mutable data that can change over the lifetime of the widget.
+  bool _isFavorited = true;
+  int _favoriteCount = 41;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(0),
+          child: IconButton(
+            padding: const EdgeInsets.all(0),
+            alignment: Alignment.center,
+            icon: (_isFavorited
+                ? const Icon(Icons.star)
+                : const Icon(Icons.star_border)),
+            color: Colors.red[500],
+            onPressed: _toggleFavorite,
+          ),
+        ),
+        SizedBox(width: 18, child: SizedBox(child: Text('$_favoriteCount'))),
+      ],
+    );
+  }
+
+  //private function indicated by _
+  void _toggleFavorite() {
+    //Calling setState() is critical, because this tells the framework 
+    //that the widget's state has changed and that the widget should be redrawn.
+    setState(() {
+      if (_isFavorited) {
+        _favoriteCount -= 1;
+        _isFavorited = false;
+      } else {
+        _favoriteCount += 1;
+        _isFavorited = true;
+      }
+    });
+  }
+}
 
 
 
