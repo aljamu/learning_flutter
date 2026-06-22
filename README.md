@@ -252,3 +252,13 @@ TextFormField(
 2. Supply the TextEditingController to a TextField.
 3. Display the current value of the text field.
 
+
+### Build a form with validation
+Apps often require users to enter information into a text field. For example, you might require users to log in with an email address and password combination. A basic form, follow these steps:
+1. Create a Form with a GlobalKey.
+2. Add a TextFormField with validation logic.
+3. Create a button to validate and submit the form.
+
+#### Create a Form with a GlobalKey
+The Form widget acts as a container for grouping and validating multiple form fields.
+When creating the form, provide a GlobalKey. This assigns a **unique identifier** to your Form. It also allows you to validate the form later.
