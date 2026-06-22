@@ -11,6 +11,37 @@ class TutorialHome extends StatelessWidget {
   Widget build(BuildContext context) {
     // Scaffold is a layout for
     // the major Material Components.
+    final stars = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.star, color: Colors.green[500]),
+        Icon(Icons.star, color: Colors.green[500]),
+        Icon(Icons.star, color: Colors.green[500]),
+        const Icon(Icons.star, color: Colors.black),
+        const Icon(Icons.star, color: Colors.black),
+      ],
+    );
+
+    final ratings = Container(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          stars,
+          const Text(
+            '170 Reviews',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w800,
+              fontFamily: 'Roboto',
+              letterSpacing: 0.5,
+              fontSize: 20,
+            ),
+          ),
+        ],
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         leading: const IconButton(
@@ -28,7 +59,7 @@ class TutorialHome extends StatelessWidget {
         ],
       ),
       // body is the majority of the screen.
-      body: const Center(child: MyButton()),
+      body: Column(children: [MyButton(), ratings]),
       floatingActionButton: const FloatingActionButton(
         tooltip: 'Add', // used by assistive technologies
         onPressed: null,
@@ -113,3 +144,4 @@ class CounterIncrementor extends StatelessWidget {
     return ElevatedButton(onPressed: onPressed, child: const Text('Increment'));
   }
 }
+

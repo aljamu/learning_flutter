@@ -128,3 +128,42 @@ The Model is the source-of-truth for your app's data and is responsible for low-
 When developers talk about state-management in Flutter, they're essentially referring to the pattern by which your app updates the data it needs to render correctly and then tells Flutter to re-render the UI with that new data.
 
 In MVVM, this responsibility falls to the ViewModel layer, which sits between and connects your UI to your Model layer. In Flutter, ViewModels use Flutter's ChangeNotifier class to notify the UI when data changes.
+
+#### Layouts
+
+Widgets can be seperated into visible and layout widgets.
+
+- Visible Widgets: Contain visible elements like icons, text, images etc.
+- Layout Widgets: Help layouting like padding, margin, colors etc.. They have child and children properties for other layout or visible widgets
+
+##### Layout
+There are Flutter Base Widgets, Material Widgets specifically for Android and Cupertino for iOS
+
+###### Container
+A container is used whenever you need customization like padding, margins, borders and bg color on it's child elements.
+
+###### Row and Column
+Used to nest other widgets inside.
+They usually take up all the space they need. For Opposite: e.g. mainAxisSize.min
+
+###### Aligning Widgets
+Alignment with mainAxisAlignment and crossAxisAlignment
+
+- mainAxisAlignment: Horizontally for a Row, Vertically for a Column (e.g. ROW [o, o, o, o, o] - ---mainAxis--->)
+- crossAxisAlignment: Vertically for a Row, Horizontally for a Column (e.g. ROW [o, o, o, o, o] vvvvcrossAxisvvvv)
+
+###### Expanded
+Widgets can be sized to fit within a row or column.
+Has Flex property: determines the flex facrot for a widget (default 1).
+E.g.
+ [Image] [   Image   ] [Image]
+[flex: 1]  [flex: 2]  [flex: 1]
+
+###### GridView
+Build a custom grid, replacing nested rows and cols
+
+###### ListView
+A column-like widget that automatically provides scrolling when content is too long
+
+###### Stack
+Arrange widgets on top of a base widget (e.g. often an image) either completely or partially.
