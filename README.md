@@ -225,3 +225,30 @@ also works Horizontally
 
 ### GestureDetector
 Use the GestureDetector widget to respond to fundamental actions, such as tapping and dragging.
+
+## Input and Forms
+### Create and style a text field. 
+Flutter provides two text fields:
+- TextField: is the most commonly used text input widget.
+```
+TextField(
+  decoration: InputDecoration(
+    border: OutlineInputBorder(),
+    hintText: 'Enter a search term',
+  ),
+),
+```
+- TextFormField: wraps a TextField and integrates it with the enclosing Form.
+```
+TextFormField(
+  decoration: const InputDecoration(
+    border: UnderlineInputBorder(),
+    labelText: 'Enter your username',
+  ),
+),
+```
+### Retrieve the value of a text field
+1. Create a TextEditingController.
+2. Supply the TextEditingController to a TextField.
+3. Display the current value of the text field.
+
