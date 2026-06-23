@@ -89,6 +89,7 @@ In Flutter, views are the widget classes of your application. Views are the prim
 All logic related to data should be handled in the view model.
 
 ### ViewModel
+**Business logic - real programming logic to run an app. A View always has a ViewModel**
 A view model exposes the application data necessary to render a view. In the architecture design described on this page, most of the logic in your Flutter application lives in view models.
 Views and view models should have a one-to-one relationship.
 A view model's main responsibilities include:
@@ -98,9 +99,12 @@ A view model's main responsibilities include:
 
 ### Model
 Models are made from repositories and services.
+**Collect small Data in a single place like data from Database or api.**
 #### Repositories
+
 Repositories is the source-of-truth for your app's data and is responsible for polling data from services, and transforming that raw data into domain models. Domain models represent the data that the application needs, formatted in a way that your view model classes can consume. There should be a repository class for each different type of data handled in your app.
 Repositories handle the business logic associated with services, but should never be aware of each other. If your application has business logic that needs data from two repositories, you should combine the data in the view model
+You should have a separate repository for each different type of data in your application. For example, the Compass app has repositories called UserRepository, BookingRepository, AuthRepository, DestinationRepository, and more.
 #### Services
 Services are in the lowest layer of your application. They wrap API endpoints and expose asynchronous response objects, such as Future and Stream objects. They're only used to isolate data-loading, and they hold no state. Your app should have one service class per data source. Examples of endpoints that services might wrap include:
 - The underlying platform, like iOS and Android APIs
@@ -108,6 +112,29 @@ Services are in the lowest layer of your application. They wrap API endpoints an
 - Local files
 As a rule of thumb, services are most helpful when the necessary data lives outside of your application's Dart code - which is true of each of the preceding examples.
 
+### TL:DR
+- View	
+A view is only aware of exactly one view model, and is never aware of any other layer or component. When created, Flutter passes the view model to the view as an argument, exposing the view model's data and command callbacks to the view.
+- ViewModel	
+A ViewModel belongs to exactly one view, which can see its data, but the model never needs to know that a view exists.
+A view model is aware of one or more repositories, which are passed into the view model's constructor.
+- Repository	
+A repository can be aware of many services, which are passed as arguments into the repository constructor.
+A repository can be used by many view models, but it never needs to be aware of them.
+- Service	
+A service can be used by many repositories, but it never needs to be aware of a repository (or any other object).
+### [Organizing Code](https://docs.flutter.dev/app-architecture/case-study)
+a useful way to organize the code is einther by feature or by **type**:
+- lib
+    - ui: views, viewModels
+    - domain: models
+    - data: repositories, services, api_model
+    - config
+    - utils
+    - routing
+    - main_staging.dart
+    - main_development.dart
+    - main.dart
 
 ## Widgets
 
