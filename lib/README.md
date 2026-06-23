@@ -1,6 +1,6 @@
 # Making a Bloodpressure App with AI Step by Step
 
-## Folder Structure
+## 1. Folder Structure
 **These folder structures are recommend by AI:**
 ### Feature-First Approach (Small-to-Large apps)
 ```
@@ -73,3 +73,7 @@ lib/
   services/
     clock_service.dart       // optional: time provider (optional)
 ```
+
+## 2. Create domain model and repository interface
+- **Domain Model:** app's "meaning" of a blood pressure reading (what UI/ViewModel uses)
+- **Repository interface:** the contract the ViewModels depend on (so they don’t care whether data is stored in web localStorage or a Windows JSON file).
