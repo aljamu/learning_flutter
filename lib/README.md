@@ -77,3 +77,9 @@ lib/
 ## 2. Create domain model and repository interface
 - **Domain Model:** app's "meaning" of a blood pressure reading (what UI/ViewModel uses)
 - **Repository interface:** the contract the ViewModels depend on (so they don’t care whether data is stored in web localStorage or a Windows JSON file).
+
+## 3. Create the storage DTO and mapper
+- **DTO (Data Transfer Object):** is what we store in JSON
+- **Mapper:** converts between:
+    - DTO (storage shape)
+    - Domain model (BpReading) (app meaning)
