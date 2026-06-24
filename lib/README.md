@@ -174,10 +174,31 @@ Real-life example: Think of a payment app. The UI might call PaymentRepository.p
 ***
 
 ## 3. Create the storage DTO and mapper
-- **DTO (Data Transfer Object):** is what we store in JSON
-- **Mapper:** converts between:
-    - DTO (storage shape)
-    - Domain model (BpReading) (app meaning)
+Create a storage DTO that matches readings are stored/transferred (e.g., JSON/file fields). Then create a mapper to convert between this DTO and your domain model so the domain stays independent from storage details.
+
+### DTO (Data Transfer Object)
+**A class that matches the exact shape you store in JSON / localStorage.**
+Storage formats usually don’t match your domain model perfectly. You create storage DTOs so that storage format changes don’t ripple into your UI/ViewModel—only the repository’s mapping changes.
+
+A Storage might:
+- use different field names
+- store numbers as strings
+- have fields you don’t want in the domain
+
+> 🤓 Real-life example: You might store a birthday in JSON as "birthday":"1990-01-05". Your domain might want DateTime birthday instead. So you store as a DTO-friendly format, then convert.
+
+> 💡 A DTO helps the domain model because the repository converts between the DTO (storage format) and the domain model (app meaning), so your domain model doesn’t depend on JSON/file/localStorage details.
+
+### Mapper
+
+A Mapper is Code that converts between DTO ⇄ Domain model
+
+> 🤓 Real-life example: Imagine your UI shows “mmHg”. Your JSON storage might store raw numbers only. Mapper can attach the meaning (or at least ensure the domain model is correct).
+
+> 💡 *Without a mapper, you’d end up with conversion logic inside ViewModels or UI like parse JSON, rename fields or convert types
+
+***
+***
 
 ## 4. Implement local data source
 - **local data source:** knows how to read/write somewhere (web or desktop) 

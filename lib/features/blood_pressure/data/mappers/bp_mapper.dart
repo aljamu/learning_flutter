@@ -1,4 +1,7 @@
-import '../../domain/models/bp_reading.dart';
+//Converts between DTO and domain model
+//import domain model
+import '../../domain/models/bp_reading.dart'; 
+//import DTO
 import '../models/bp_reading_dto.dart';
 
 class BpMapper {

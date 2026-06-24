@@ -1,3 +1,5 @@
+//DTO that represents the data for the app
+
 class BpReadingDto {
   final String id;
   final int systolic;
@@ -15,6 +17,7 @@ class BpReadingDto {
     required this.measuredAtEpochMs,
   });
 
+// a special kind of constructor that returns an object, and it can run logic before creating it
   factory BpReadingDto.fromJson(Map<String, dynamic> json) => BpReadingDto(
         id: json['id'] as String,
         systolic: json['systolic'] as int,
