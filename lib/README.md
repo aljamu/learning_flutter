@@ -242,6 +242,8 @@ It depends on the Repository Interface — so it doesn’t know anything about J
 
 > 💡 So the UI becomes mostly “dumb”: it renders whatever the ViewModel says, and tells the ViewModel when the user taps something.
 
+Views are self explanatory as they only contain UI.
+
 ***
 ***
 ## 6. Dependency Injection Wiring (DI)
@@ -251,22 +253,12 @@ ViewModel BpListVm needs a BpRepository. **wiring** gives it a BpRepositoryImpl.
 
 In Flutter/Dart you typically do it manually by calling constructors in main.dart
 
-***
-***
-
-## Views
-Self Explanatory
-
+Todo for some other time:
+core/di/ to wire repository + viewmodels (or do it directly in main.dart first).
 ***
 ***
 
 ![MVVM-Schematische Darstellung](../docs/images/MVVM_schema.png)
 
-***
-***
 
-
-Todo:
-
-core/di/ to wire repository + viewmodels (or do it directly in main.dart first).
 
