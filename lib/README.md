@@ -244,9 +244,7 @@ It depends on the Repository Interface — so it doesn’t know anything about J
 
 ***
 ***
-## Todo:
-
-Dependency Injection Wiring (DI)
+## 6. Dependency Injection Wiring (DI)
 **It means you provide an object (like your repository) to the things that need it (like your ViewModels) instead of those classes creating it themselves.** So wiring is construction + connection, kept in one place so feature code stays clean and testable. It’s a common software engineering pattern (not a Flutter-specific feature).
 
 ViewModel BpListVm needs a BpRepository. **wiring** gives it a BpRepositoryImpl. BpRepositoryImpl is built with BpLocalDataSource and BpMapper
@@ -255,50 +253,7 @@ In Flutter/Dart you typically do it manually by calling constructors in main.dar
 
 ***
 ***
-Pick a simple approach:
-
-create dependencies in main.dart (manual wiring)
-pass BpRepository into the ViewModels
-Since you’re following a structured layout, you likely want:
+## Todo:
 
 core/di/ to wire repository + viewmodels (or do it directly in main.dart first).
 
-Step 7: ViewModels
-Implement:
-
-bp_list_vm.dart
-loads readings from BpRepository.getReadings()
-exposes state (list) and a loading/error flag
-bp_form_vm.dart
-fields for systolic/diastolic/pulse/notes
-action methods:
-create reading (calls addReading)
-update reading (optional now)
-Step 8: UI pages (List + Add)
-Create:
-
-bp_list_page.dart
-uses BpListVm
-shows saved readings
-FloatingActionButton navigates to add page
-bp_add_page.dart
-uses BpFormVm
-saves and returns
-Step 9: Navigation
-Update your main.dart / routing so:
-
-app starts at BpListPage
-navigation to BpAddPage works
-Step 10: UI widgets
-Optionally create:
-
-bp_reading_card.dart to keep list UI clean.
-To start your new conversation
-Reply with:
-
-Whether path_provider is already added and flutter pub get succeeds
-Paste your current contents of:
-bp_local_android.dart
-bp_mapper.dart
-bp_reading_dto.dart
-Tell me what you want next: Step 5 (BpRepositoryImpl) or jump to Step 7 (ViewModels).

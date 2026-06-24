@@ -1,20 +1,25 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
+import 'app.dart';
 
-void main() => runApp(const MyApp());
+import 'features/blood_pressure/data/datasources/local/bp_local_android.dart';
+import 'features/blood_pressure/data/repositories/bp_repository_impl.dart';
+import 'features/blood_pressure/presentation/viewmodels/bp_list_vm.dart';
+import 'features/blood_pressure/presentation/viewmodels/bp_form_vm.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    const appTitle = 'Form Validation Demo';
+  final localDataSource = BpLocalDataSourceAndroid();
+  final repository = BpRepositoryImpl(localDataSource: localDataSource);
 
-    return MaterialApp(
-      title: appTitle,
-      home: Scaffold(
-        appBar: AppBar(title: const Text(appTitle)),
-        body: Text("Hello World"),
-      ),
-    );
-  }
+  final bpListVm = BpListVm(repository: repository);
+  final bpFormVm = BpFormVm(repository: repository);
+
+  runApp(
+    App(
+      bpListVm: bpListVm,
+      bpFormVm: bpFormVm,
+    ),
+  );
 }
