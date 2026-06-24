@@ -229,9 +229,32 @@ A Storage might:
 ***
 ***
 
+## 5. ViewModel
+**A ViewModel is a class that sits between your UI (Widgets/Pages) and your app logic (repositories).** A ViewModel holds:
+- Holds screen state (e.g., “current list of readings”, “is loading”, “error message”)
+- Exposes that state to the UI
+- Has actions the UI triggers (e.g., “load readings”, “save new reading”)
+- Calls repositories to do real work (read/write data)
+- Notifies the UI when state changes (commonly via ChangeNotifier, ValueNotifier, Riverpod/Bloc equivalents, etc.)
+
+It depends on the Repository Interface — so it doesn’t know anything about JSON/files.
+
+
+> 💡 So the UI becomes mostly “dumb”: it renders whatever the ViewModel says, and tells the ViewModel when the user taps something.
+
+***
+***
 ## Todo:
 
-Step 6: Dependency wiring (DI)
+Dependency Injection Wiring (DI)
+**It means you provide an object (like your repository) to the things that need it (like your ViewModels) instead of those classes creating it themselves.** So wiring is construction + connection, kept in one place so feature code stays clean and testable. It’s a common software engineering pattern (not a Flutter-specific feature).
+
+ViewModel BpListVm needs a BpRepository. **wiring** gives it a BpRepositoryImpl. BpRepositoryImpl is built with BpLocalDataSource and BpMapper
+
+In Flutter/Dart you typically do it manually by calling constructors in main.dart
+
+***
+***
 Pick a simple approach:
 
 create dependencies in main.dart (manual wiring)
@@ -239,6 +262,7 @@ pass BpRepository into the ViewModels
 Since you’re following a structured layout, you likely want:
 
 core/di/ to wire repository + viewmodels (or do it directly in main.dart first).
+
 Step 7: ViewModels
 Implement:
 
