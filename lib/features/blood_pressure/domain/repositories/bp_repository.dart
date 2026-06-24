@@ -1,3 +1,6 @@
+//An abstract definition of the operations your app needs, 
+//stroing and retrieving data, without saying where it is stored
+
 import '../models/bp_reading.dart';
 
 abstract class BpRepository {

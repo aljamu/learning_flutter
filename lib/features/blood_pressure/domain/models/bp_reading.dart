@@ -1,3 +1,6 @@
+// Define the meaning of a blood pressure reading for the UI
+// The Ui does not need to know where the data comes from.
+
 class BpReading {
   final String id;
   final int systolic;

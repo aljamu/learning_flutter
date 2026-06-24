@@ -10,43 +10,106 @@ A Flutter Only Basic Blood Pressure App made step-by-step with help of AI. It wi
 lib/
   main.dart
   app.dart
+  // Entry point + root app widget.
+  // Why: this is where the app starts and where global setup lives (routing, theme setup, global state wiring).
 
   core/
-    di/                 // dependency wiring (create repo/datasources/viewmodels)
-    errors/             // shared error types (optional)
-    theme/              // theme constants (optional)
-    utils/              // shared helpers (formatters, small generic utils)
+    di/
+      // Dependency wiring.
+      // Why: create objects and connect interfaces to their implementations in one place.
+      // This keeps feature code from knowing how everything is constructed.
+
+    errors/
+      // Shared error types.
+      // Why: ViewModels and UI can handle errors in a consistent way.
+
+    theme/
+      // Theme constants.
+      // Why: keep colors/styles/numbers in one place instead of copying them into widgets.
+
+    utils/
+      // Shared helpers.
+      // Why: small generic functions used across multiple parts of the app.
 
   features/
     blood_pressure/
-      data/
-        datasources/
-          local/       // local storage implementations (web/windows)
-            bp_local.dart
-        mappers/        // dto <-> domain transforms
-          bp_mapper.dart
+      // One feature “slice”.
+      // Why: keeps code related to blood pressure in one location instead of mixing it with other features.
 
       domain/
-        models/        // domain entities (what the app uses)
-          bp_reading.dart
-        repositories/  // repository interfaces (contracts)
-          bp_repository.dart
+        models/
+          // Domain entities.
+          // Why: these are the app’s core concepts (the data shape the app should use everywhere).
+          // Domain entities should not depend on Flutter or storage details.
+
+        repositories/
+          // Repository interfaces (contracts).
+          // Why: define what the app needs to do (read/add/etc) without saying where data comes from.
+
+      data/
+        datasources/
+          local/
+            // Local storage implementations.
+            // Why: put storage-specific code here (files/database preferences, etc).
+            // This layer knows how to store and load raw data.
+            // It should not contain app UI code.
+
+            bp_local.dart
+              // Concrete local datasource for blood pressure readings.
+
+        mappers/
+          // Converts between different representations of the same data.
+          // Why: storage formats often do not match domain formats.
+          // Mappers translate storage data into domain entities and back.
+
+          bp_mapper.dart
+            // Transforms between local/store shapes and domain entities.
+
+        repositories/
+          // Concrete repository implementations.
+          // Why: this layer connects domain contracts to data sources and mappers.
+          // It calls the datasource, maps results into domain entities, and returns them.
+
+          // (Add bp_repository_impl.dart or similarly named file here.)
 
       presentation/
-        viewmodels/    // ChangeNotifier state + actions
+        viewmodels/
+          // ViewModel state + actions for this feature.
+          // Why: UI should be mostly rendering; ViewModels hold UI state and respond to user actions.
+          // ViewModels call the domain repository interfaces.
+
           bp_list_vm.dart
+            // State and actions for the readings list screen.
+
           bp_form_vm.dart
-        pages/          // screens/routes
+            // State and actions for the add/edit form screen.
+
+        pages/
+          // Flutter screens and routes for this feature.
+          // Why: only here should widgets and navigation logic live for this feature.
+
           bp_list_page.dart
+            // Builds the list UI and uses bp_list_vm.dart state.
+
           bp_add_page.dart
-        widgets/        // reusable UI components
+            // Builds the form UI and uses bp_form_vm.dart state.
+
+        widgets/
+          // Reusable widgets that belong only to this feature.
+          // Why: avoid putting feature-specific widgets in the app-wide widgets folder.
+
           bp_reading_card.dart
+            // UI component that displays a single reading.
 
-    //Future Features could be: medications, analytics, settings, sync, etc.
-    //They would all contain a /data/, /domain/ and /presentation/ subfolder
+  widgets/
+    // App-wide reusable widgets (optional).
+    // Why: things reused across multiple features go here.
 
-  widgets/              // truly app-wide reusable widgets (optional)
-  services/            // optional non-feature services (e.g., clock/time provider)
+  services/
+    // Non-UI, non-persistence services (optional).
+    // Why: shared capabilities that aren’t tied to one feature (like a clock/time provider).
+    // Keeping these here reduces duplicated code across features.
+
 
 ```
 ### Type-First Approach (Small-To-Medium Apps)
@@ -77,9 +140,38 @@ lib/
     clock_service.dart       // optional: time provider (optional)
 ```
 
+***
+***
+***
 ## 2. Create domain model and repository interface
-- **Domain Model:** app's "meaning" of a blood pressure reading (what UI/ViewModel uses)
-- **Repository interface:** the contract the ViewModels depend on (what the ui calls, so they don’t care whether data is stored in web localStorage or a Windows JSON file).
+This step is for creating the core “meaning” of a blood pressure reading (domain model) and the rules for how the app reads/writes readings (repository interface) so your UI/ViewModel can work with a consistent API while the storage implementation can change later without affecting the UI/ViewModel.
+
+### Domain Model
+**A “domain” is the real-world problem your app is about.**
+Is a plain Dart class that represents what your app means by a “blood pressure reading”.
+Exists, so the rest of the app (UI/ViewModel) can work with one consistent shape that represents your business concept, not how/where you store it. The UI should not care about JSON, localStorage, file paths, etc.
+
+> 🤓 Comes from the problem you’re solving (blood pressure tracking). You look at the app requirements and decide what “a reading” must contain.
+
+> 💡 So domain model = Dart class that represents that real-world concept in a clean app-friendly way (not JSON/file details).
+
+### Repository Interface
+**A “repository” is a layer that stores and retrieves data.**
+Is abstract definition of the operations your app needs, like:
+- “get all readings”
+- “add a reading”
+- “delete a reading”
+ViewModels depend on this interface, not on storage details.
+That’s the whole point: ViewModels call the repository interface; the repository implementation decides where data comes from (web localStorage, desktop file, etc).
+
+Real-life example: Think of a payment app. The UI might call PaymentRepository.pay(amount). It doesn’t care whether the payment goes through Stripe, Adyen, or a mock for testing.
+
+> 🤓 So the ViewModel can be written once, and later you can change the storage (localStorage, file, database) without changing the ViewModel—as long as the repository still follows the same contract.
+
+> 💡 So repository interface = the “contract” for operations like get all readings, add, delete—without saying where it’s stored (web localStorage, a file, etc.).
+
+***
+***
 
 ## 3. Create the storage DTO and mapper
 - **DTO (Data Transfer Object):** is what we store in JSON
