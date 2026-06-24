@@ -2,7 +2,10 @@
 A Flutter Only Basic Blood Pressure App made step-by-step with help of AI. It will be for android for now, later will add packages and other environments.
 
 ## 0. Necessary packages
-
+Add the package to the pubspec.yaml dependencies. Run `flutter pub get`.
+### Path Provider
+- path_provider is a Flutter package that tells your app where to store files by giving you platform-appropriate filesystem paths (like the app’s documents directory, temporary directory, etc.).
+- >path_provider: ^2.1.4
 ## 1. Folder Structure
 **These folder structures are recommend by AI:**
 ### Feature-First Approach (Small-to-Large apps)
@@ -190,88 +193,44 @@ A Storage might:
 > 💡 A DTO helps the domain model because the repository converts between the DTO (storage format) and the domain model (app meaning), so your domain model doesn’t depend on JSON/file/localStorage details.
 
 ### Mapper
-
-A Mapper is Code that converts between DTO ⇄ Domain model
+**A Mapper is Code that converts between DTO ⇄ Domain model**
 
 > 🤓 Real-life example: Imagine your UI shows “mmHg”. Your JSON storage might store raw numbers only. Mapper can attach the meaning (or at least ensure the domain model is correct).
 
-> 💡 *Without a mapper, you’d end up with conversion logic inside ViewModels or UI like parse JSON, rename fields or convert types
+> 💡 Without a mapper, you’d end up with conversion logic inside ViewModels or UI like parse JSON, rename fields or convert types
 
 ***
 ***
 
-## 4. Implement local data source
-- **local data source:** knows how to read/write somewhere (web or desktop) 
-- **repository implementation:** uses that data source and returns domain objects to the rest of the app
+## 4. Implement local data source and RepositoryImpl
 
-- This makes BpRepositoryImpl actually persist data on:
-    - Web: browser storage (localStorage)
-    - Desktop: a local JSON file in the app’s working directory
+### Local Data Source
+**the lowest level “storage worker” that knows how to read/write somewhere (e.g. localStorage or JSON-File)**
 
-## Full recap (what you’ve built so far)
-1) Domain model
-You created the domain entity:
+> 🤓 Real-life example: If you store app settings, you might store them in:
+>- a config file on desktop
+>- localStorage on web The code to read/write those is different, so you keep it in a dedicated layer.
 
-lib/features/blood_pressure/domain/models/bp_reading.dart
-BpReading with fields: id, systolic, diastolic, pulse, optional notes, and measuredAt.
-2) Repository interface (domain contract)
-You created:
+> 💡 All storages work differently. The file system API and localStorage API are for example not the same. So you isolate that complexity.
 
-lib/features/blood_pressure/domain/repositories/bp_repository.dart
-BpRepository with:
-getReadings()
-addReading(reading)
-updateReading(reading)
-deleteReading(id)
-3) Storage DTO + mapper
-You created storage and conversion logic:
+### Repository Implementation
+**Is the concrete class that implements your [repository interface.](#2-create-domain-model-and-repository-interface)** Delegates to the local data source and uses mappers to convert between domain models and storage DTOs for each operation.
 
-lib/features/blood_pressure/data/models/bp_reading_dto.dart
-BpReadingDto stored as integers + measuredAtEpochMs
-lib/features/blood_pressure/data/mappers/bp_mapper.dart
-BpMapper.toDomain(BpReadingDto) -> BpReading
-BpMapper.toDto(BpReading) -> BpReadingDto
-4) We discussed local data source implementations (and rolled back)
-We initially tried web/desktop implementations using dart:html / conditional imports / flutter_web_plugins, but those caused compile/package issues and you eventually changed requirements to:
+> 🤓 Real-life example: repository impl reads from browser localStorage. maps stored JSON data into BpReading for Web. Differently on Desktop.
 
-Android only
-no web
-no desktop
-Then we returned to the “general Step 4” idea: implement a local data source + have the repository persist data via that source.
+> 💡  it connects everything:
+>1. ViewModel calls repository interface (domain contract)
+>2. Repository implementation calls local data source (storage access)
+>3. Repository implementation uses mapper:
+> - DTO → domain model when reading
+> - domain model → DTO when saving
+>4. Repository implementation returns domain objects to the app
 
-5) Local data source: what you needed / last completed items
-You said you were missing the local Dart file. The correct “Step 4” shape for Android is:
+***
+***
 
-lib/features/blood_pressure/data/datasources/local/bp_local.dart (interface)
-lib/features/blood_pressure/data/datasources/local/bp_local_android.dart (Android JSON-file implementation)
-(and then later) BpRepositoryImpl that uses BpLocalDataSource
-At the end of the conversation, I provided the missing bp_local.dart and the Android implementation bp_local_android.dart (JSON file using path_provider), but you still needed to confirm the mapper/package paths compile.
+## Todo:
 
-Next steps to continue (Android only)
-Step 4D (finish): ensure the files exist and compile
-Confirm you have:
-
-lib/features/blood_pressure/data/datasources/local/bp_local.dart
-lib/features/blood_pressure/data/datasources/local/bp_local_android.dart
-pubspec.yaml includes:
-yaml
-
-
-dependencies:
-  path_provider: ^2.1.4
-BpMapper and BpReadingDto paths/imports match your actual folder structure.
-If anything fails, paste the exact compile error and the first ~30 lines of the failing file.
-
-Step 5: Create BpRepositoryImpl
-Create:
-
-lib/features/blood_pressure/data/repositories/bp_repository_impl.dart
-This class will:
-
-take BpLocalDataSource local
-implement BpRepository by calling:
-local.loadReadings() / local.saveReadings(...)
-keep “domain-only” logic in BpRepositoryImpl, while file/JSON logic stays in BpLocalAndroidDataSource.
 Step 6: Dependency wiring (DI)
 Pick a simple approach:
 

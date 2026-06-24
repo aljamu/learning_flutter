@@ -2,7 +2,7 @@
 // The Ui does not need to know where the data comes from.
 
 class BpReading {
-  final String id;
+  final int id;
   final int systolic;
   final int diastolic;
   final int pulse;

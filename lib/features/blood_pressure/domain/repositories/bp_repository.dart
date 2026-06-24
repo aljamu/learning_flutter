@@ -7,5 +7,5 @@ abstract class BpRepository {
   Future<List<BpReading>> getReadings();
   Future<BpReading> addReading(BpReading reading);
   Future<void> updateReading(BpReading reading);
-  Future<void> deleteReading(String id);
+  Future<void> deleteReading(int id);
 }
