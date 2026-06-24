@@ -113,8 +113,8 @@ lib/
     // Why: shared capabilities that aren’t tied to one feature (like a clock/time provider).
     // Keeping these here reduces duplicated code across features.
 
-
 ```
+
 ### Type-First Approach (Small-To-Medium Apps)
 ```
 lib/
@@ -253,7 +253,20 @@ In Flutter/Dart you typically do it manually by calling constructors in main.dar
 
 ***
 ***
-## Todo:
+
+## Views
+Self Explanatory
+
+***
+***
+
+![MVVM-Schematische Darstellung](../docs/images/MVVM_schema.png)
+
+***
+***
+
+
+Todo:
 
 core/di/ to wire repository + viewmodels (or do it directly in main.dart first).
 
